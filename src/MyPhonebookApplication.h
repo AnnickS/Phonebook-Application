@@ -51,16 +51,22 @@ void myPhonebookApplication::run(){
 			//Searches for contact by name
 		case 'S':
 		case 's':
+
+			search();
 			break;
 
 			//Prints contacts in ascending order
 		case 'P':
 		case 'p':
+
+			print();
 			break;
 
 			//Lists contacts before the inputed name
 		case 'F':
 		case 'f':
+
+			filter();
 			break;
 
 			//Quits
@@ -107,8 +113,18 @@ void myPhonebookApplication::load(){
 void myPhonebookApplication::search(){
 	string name;
 	Contact search;
+
+	cout<<"Enter name: ";
+	cin>>name;
+
 	search.setName(name);
-	contactList.search(search);
+
+	Contact* found = &contactList.search(search)->data;
+	if(found != NULL){
+		cout<<"Phone: "<<found->getNumber();
+	}
+	else
+		cout<<"Could not find contact.";
 
 }
 
@@ -117,7 +133,15 @@ void myPhonebookApplication::print(){
 }
 
 void myPhonebookApplication::filter(){
+	string name;
+	Contact con;
 
+	cout<<"Enter name: ";
+	cin>>name;
+
+	int i = contactList.inOrderTo(con);
+
+	cout<<i<<" contacts..."<<endl;
 }
 
 #endif /* MYPHONEBOOKAPPLICATION_H_ */

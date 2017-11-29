@@ -24,10 +24,11 @@ private:
 	void inOrderT(node<T>*);
 	void preOrderT(node<T>*);
 	void postOrderT(node<T>*);
+	int inOrderToT(node<T>*, T&);
 	int heightT(node<T>*);
 	int countT(node<T>*);
 	void insertT(node<T>*&, T&);
-	bool searchT(node<T>*, T&);
+	node<T>* searchT(node<T>*, T&);
 	void deleteNodeT(node<T>*&, T&);
 	int leafCount(node<T>*);
 	node<T>* findMaxT(node<T>*);
@@ -39,10 +40,11 @@ public:
 	void inOrder();
 	void preOrder();
 	void postOrder();
+	int inOrderTo(T&);
 	int height();
 	int count();
 	void insert(T&);
-	bool search(T&);
+	node<T>* search(T&);
 	void deleteNode(T&);
 	int numOfNodes();
 	int numOfLeaves();
@@ -106,6 +108,28 @@ void BinarySearchTree<T>::postOrderT(node<T>* p){
 }
 
 template<class T>
+int BinarySearchTree<T>::inOrderTo(T& item){
+	return inOrderToT(root, item);
+}
+
+template<class T>
+int BinarySearchTree<T>::inOrderToT(node<T>* p, T& item){
+	if(p != NULL ){
+		int i = j = 0;
+		int printed = 0;
+		if(p->data < item){
+			printed = 1;
+			i = inOrderToT(p->left, item);
+			cout<<p->data;
+			j = inOrderToT(p->right, item);
+		}
+		return  printed+i+j;
+	}
+	else
+		return 0;
+}
+
+template<class T>
 int BinarySearchTree<T>::height(){
 	//if the index starts at 0 add the minus 1
 	return heightT(root)-1;
@@ -163,7 +187,7 @@ void BinarySearchTree<T>::insertT(node<T>*& p, T& item){ // a new one. So you ch
 		p->data = item;
 		p->right=p->left=NULL;
 	} else {
-		if(p->data < item->data){
+		if(p->data < item){
 			insertT(p->left, item);
 		}
 		else if(item > p->data){
@@ -173,14 +197,14 @@ void BinarySearchTree<T>::insertT(node<T>*& p, T& item){ // a new one. So you ch
 }
 
 template<class T>
-bool BinarySearchTree<T>::search(T& item){
+node<T>* BinarySearchTree<T>::search(T& item){
 	return searchT(root, item);
 }
 
 template<class T>
-bool BinarySearchTree<T>::searchT(node<T>* p, T& item){
+node<T>* BinarySearchTree<T>::searchT(node<T>* p, T& item){
 	if(p == NULL){
-		return false;
+		return NULL;
 	}
 	else if(item < p->data){
 		return searchT(p->left, item);
@@ -189,7 +213,7 @@ bool BinarySearchTree<T>::searchT(node<T>* p, T& item){
 		return searchT(p->right, item);
 	}
 	else
-		return true;
+		return p;
 }
 
 template<class T>

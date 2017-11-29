@@ -16,6 +16,7 @@ struct Contact{
 	string number;
 public:
 	Contact(string name, string number) { this->name = name; this->number = number; }
+	Contact() { }
 	void setName(string);
 	void setNumber(string);
 	string getName();
