@@ -115,7 +115,8 @@ int BinarySearchTree<T>::inOrderTo(T& item){
 template<class T>
 int BinarySearchTree<T>::inOrderToT(node<T>* p, T& item){
 	if(p != NULL ){
-		int i = j = 0;
+		int i = 0;
+		int j = 0;
 		int printed = 0;
 		if(p->data < item){
 			printed = 1;
