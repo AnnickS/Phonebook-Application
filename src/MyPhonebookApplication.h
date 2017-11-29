@@ -8,11 +8,13 @@
 #ifndef MYPHONEBOOKAPPLICATION_H_
 #define MYPHONEBOOKAPPLICATION_H_
 
+#include <algorithm>
 #include "BinarySearchTree.h"
+#include "Contact.h"
 
 class myPhonebookApplication{
 private:
-	BinarySearchTree Contacts;
+	BinarySearchTree<Contact> contactList;
 	void add();
 	void load();
 	void search();
@@ -37,24 +39,31 @@ void myPhonebookApplication::run(){
 			//Adds a contact
 		case 'A':
 		case 'a':
+
 			add();
 			break;
+
 			//Loads contacts from file
 		case 'L':
 		case 'l':
 			break;
+
 			//Searches for contact by name
 		case 'S':
 		case 's':
 			break;
+
 			//Prints contacts in ascending order
 		case 'P':
 		case 'p':
 			break;
+
 			//Lists contacts before the inputed name
 		case 'F':
 		case 'f':
 			break;
+
+			//Quits
 		case 'Q':
 		case 'q':
 			cout<<"Bye"<<endl;
@@ -74,20 +83,37 @@ void myPhonebookApplication::add(){
 	cout<<"Enter name: ";
 	cin>>name;
 
+	if(std::any_of(name.begin(), name.end(), ::isdigit)){
+			cout<<"Invalid input."<<endl;
+			return;
+	}
+
 	cout<<"Enter phone: ";
 	cin>>number;
+
+	Contact adding = Contact(name, number);
+
+	contactList.insert(adding);
 }
 
 void myPhonebookApplication::load(){
+	string name;
+
+	cout<<"Enter file name: ";
+	cin>>name;
 
 }
 
 void myPhonebookApplication::search(){
+	string name;
+	Contact search;
+	search.setName(name);
+	contactList.search(search);
 
 }
 
-void myPhonebookApplication:print(){
-
+void myPhonebookApplication::print(){
+	contactList.inOrder();
 }
 
 void myPhonebookApplication::filter(){
