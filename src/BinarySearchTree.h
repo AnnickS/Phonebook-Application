@@ -36,7 +36,7 @@ private:
 	void destroyT(node<T>*);
 
 public:
-	BinarySearchTree();
+	BinarySearchTree() {}
 	void inOrder();
 	void preOrder();
 	void postOrder();
@@ -115,16 +115,17 @@ int BinarySearchTree<T>::inOrderTo(T& item){
 template<class T>
 int BinarySearchTree<T>::inOrderToT(node<T>* p, T& item){
 	if(p != NULL ){
-		int i = 0;
-		int j = 0;
-		int printed = 0;
-		if(p->data < item){
-			printed = 1;
+		if(p->data > item){
+			inOrderToT(p->left, item);
+		}
+		else{
+			int i;
 			i = inOrderToT(p->left, item);
 			cout<<p->data;
-			j = inOrderToT(p->right, item);
+			return 1+i+inOrderToT(p->right, item);
+
+			return 0;
 		}
-		return  printed+i+j;
 	}
 	else
 		return 0;
@@ -189,10 +190,10 @@ void BinarySearchTree<T>::insertT(node<T>*& p, T& item){ // a new one. So you ch
 		p->right=p->left=NULL;
 	} else {
 		if(p->data < item){
-			insertT(p->left, item);
-		}
-		else if(item > p->data){
 			insertT(p->right, item);
+		}
+		else if(p->data > item){
+			insertT(p->left, item);
 		}
 	}
 }
@@ -287,7 +288,7 @@ node<T>* BinarySearchTree<T>::findMinT(node<T>* p){
 
 template<class T>
 void BinarySearchTree<T>::destroyTree(){
-	deleteT(root);
+	destroyT(root);
 }
 
 template<class T>

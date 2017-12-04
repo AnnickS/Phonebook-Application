@@ -9,6 +9,7 @@
 #define MYPHONEBOOKAPPLICATION_H_
 
 #include <algorithm>
+#include <fstream>
 #include "BinarySearchTree.h"
 #include "Contact.h"
 
@@ -30,10 +31,13 @@ void myPhonebookApplication::run(){
 
 	cout<<"***MY PHONEBOOK APPLICATION***"<<endl;
 	cout<<"Please choose an operation:"<<endl;
-	cout<<"A(Add) | L(Load) | S(Search) | P(Print) | F(Filter) |Q(Quit):"<<endl;
-	cin>>input;
 
 	do{
+		cin.clear();
+
+		cout<<endl<<"A(Add) | L(Load) | S(Search) | P(Print) | F(Filter) |Q(Quit):"<<endl;
+		cin>>input;
+
 		switch(input)
 		{
 			//Adds a contact
@@ -46,6 +50,8 @@ void myPhonebookApplication::run(){
 			//Loads contacts from file
 		case 'L':
 		case 'l':
+
+			load();
 			break;
 
 			//Searches for contact by name
@@ -72,12 +78,10 @@ void myPhonebookApplication::run(){
 			//Quits
 		case 'Q':
 		case 'q':
+			contactList.destroyTree();
 			cout<<"Bye"<<endl;
 			break;
 		}
-
-		cout<<endl<<"A(Add) | L(Load) | S(Search) | P(Print) | F(Filter) |Q(Quit):"<<endl;
-		cin>>input;
 
 	}while(input != 'Q' && input != 'q');
 }
@@ -86,8 +90,10 @@ void myPhonebookApplication::add(){
 	string name;
 	string number;
 
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cout<<"Enter name: ";
-	cin>>name;
+	getline(cin, name);
+	if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 
 	if(std::any_of(name.begin(), name.end(), ::isdigit)){
 			cout<<"Invalid input."<<endl;
@@ -95,7 +101,7 @@ void myPhonebookApplication::add(){
 	}
 
 	cout<<"Enter phone: ";
-	cin>>number;
+	getline(cin, number);
 
 	Contact adding = Contact(name, number);
 
@@ -103,19 +109,39 @@ void myPhonebookApplication::add(){
 }
 
 void myPhonebookApplication::load(){
+	Contact c;
 	string name;
+	string nameLast;
+	string number;
 
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cout<<"Enter file name: ";
 	cin>>name;
 
+	ifstream inFile;
+	inFile.open(name);
+//	ofstream onFile;
+//	onFile.open("phonebook1.txt");
+
+	while(inFile >> name)
+	{
+		//cout<<"does it get here?"<<endl;
+		inFile >> nameLast;
+		inFile >> number;
+		name += " " +nameLast;
+		c = Contact(name, number);
+		contactList.insert(c);
+	}
 }
 
 void myPhonebookApplication::search(){
 	string name;
 	Contact search;
 
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cout<<"Enter name: ";
-	cin>>name;
+	getline(cin, name);
+	if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 
 	search.setName(name);
 
@@ -136,8 +162,11 @@ void myPhonebookApplication::filter(){
 	string name;
 	Contact con;
 
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cout<<"Enter name: ";
 	cin>>name;
+
+	con.setName(name);
 
 	int i = contactList.inOrderTo(con);
 

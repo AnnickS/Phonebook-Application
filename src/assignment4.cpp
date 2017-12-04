@@ -12,5 +12,8 @@ using namespace std;
 
 int main() {
 
+	myPhonebookApplication project;
+	project.run();
+
 	return 0;
 }
