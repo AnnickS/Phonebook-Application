@@ -120,12 +120,9 @@ void myPhonebookApplication::load(){
 
 	ifstream inFile;
 	inFile.open(name);
-//	ofstream onFile;
-//	onFile.open("phonebook1.txt");
 
 	while(inFile >> name)
 	{
-		//cout<<"does it get here?"<<endl;
 		inFile >> nameLast;
 		inFile >> number;
 		name += " " +nameLast;
@@ -164,7 +161,8 @@ void myPhonebookApplication::filter(){
 
 	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	cout<<"Enter name: ";
-	cin>>name;
+	getline(cin, name);
+	if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 
 	con.setName(name);
 
